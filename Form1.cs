@@ -170,6 +170,40 @@ namespace Crud_Serializzato
                 MessageBox.Show("Nome dello studente non trovato.");
             }
         }
+        private void SearchVote_Click(object sender, EventArgs e)
+        {
+            // Verifica se l'input è un numero intero valido
+            if (int.TryParse(BoxSearchVote.Text, out int searchVote))
+            {
+                // Trova tutti gli studenti con il voto specificato
+                var studentsWithVote = studentVotes.Where(vote => vote.VoteValue == searchVote).ToList();
+
+                // Verifica se ci sono studenti con il voto cercato
+                if (studentsWithVote.Count > 0)
+                {
+                    // Costruisce una stringa con tutti gli studenti che hanno il voto cercato
+                    string result = $"Studenti con voto {searchVote}:\n";
+                    foreach (var student in studentsWithVote)
+                    {
+                        result += $"Studente: {student.StudentName}, Classe: {student.ClassName}, Materia: {student.SubjectName}\n";
+                    }
+
+                    // Mostra la lista degli studenti in una MessageBox
+                    MessageBox.Show(result);
+                }
+                else
+                {
+                    // Se nessuno studente ha quel voto, mostra un messaggio
+                    MessageBox.Show($"Nessuno studente ha il voto {searchVote}.");
+                }
+            }
+            else
+            {
+                // Se l'input non è valido, mostra un messaggio di errore
+                MessageBox.Show("Per favore, inserisci un voto valido.");
+            }
+        }
+
 
 
         private void EXIT_Click(object sender, EventArgs e)
@@ -181,6 +215,8 @@ namespace Crud_Serializzato
         {
 
         }
+
+
     }
     public class StudentVote
     {
@@ -189,7 +225,7 @@ namespace Crud_Serializzato
         public string SubjectName { get; set; }
         public int VoteValue { get; set; }
 
-
+        // Costruttore
         public StudentVote(string studentName, string className, string subjectName, int voteValue)
         {
             StudentName = studentName;
